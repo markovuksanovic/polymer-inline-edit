@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+##### Example
+
+    <inline-edit></inline-edit>
+
+@element inline-edit
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<link rel="import" href="../iron-icons/editor-icons.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-label/iron-label.html">
+
+<dom-module name="inline-edit">
+  <link rel="import" type="css" href="inline-edit.css">
+  <template>
+    <div id="labelWrapper">
+      <iron-label>{{_displayedValue}}</iron-label><iron-icon icon="editor:mode-edit" on-tap="showEditMode"></iron-icon>
+    </div>
+    <paper-input id="input" class="hidden" on-blur="showLabelMode" value="{{value}}" tabindex="1"></paper-input>
+  </template>
+  <script>
+    Polymer({
+      is: 'inline-edit',
+
+      properties: {
+        
+        _displayedValue: {
+          type: String,
+          value: 'N/A',
+        },
+        
+        value: {
+          type: String,
+          value: '',
+          observe: '_stuffChanged'
+        }
+      },
+
+      ready: function() {
+      },
+
+      _stuffChanged: function() {
+        if(this.value) {
+          this._displayedValue = this.value;
+        } else {
+          this._displayedValue = 'N/A'
+        }
+      },
+
+      task: function(dummy) {
+      },
+      
+      showEditMode: function() {
+        this.$.input.classList.remove('hidden');
+        this.$.labelWrapper.classList.add('hidden');
+        this.$.input.querySelector('input').focus();
+      },
+      
+      showLabelMode: function() {
+        this._stuffChanged();
+        this.$.labelWrapper.classList.remove('hidden');
+        this.$.input.classList.add('hidden');
+      }
+    });
+  </script>
+</dom-module>
